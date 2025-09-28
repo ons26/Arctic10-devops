@@ -15,4 +15,11 @@ pipeline {
             }
         }
     }
+     post {
+        success {
+            // Envoie un email quand le build réussit
+            mail to: 'ons.benmaaouia@esprit.tn',
+                 subject: "Build réussi: ${currentBuild.fullDisplayName}",
+                 body: "Le build ${currentBuild.fullDisplayName} a réussi. Consulte Jenkins pour plus de détails."
+        }
 }
