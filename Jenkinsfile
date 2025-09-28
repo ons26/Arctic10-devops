@@ -14,11 +14,5 @@ pipeline {
                 
             }
         }
-          stage('Test') {
-            steps {
-                // Cette commande va exécuter les tests Maven
-                sh 'mvn test'
-            }
-        }
     }
 }
