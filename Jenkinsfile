@@ -14,6 +14,16 @@ pipeline {
                 
             }
         }
+         stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube-Local') {
+            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                sh 'mvn sonar:sonar -Dsonar.projectKey=arctic10-devops -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN'
+            }
+        }
+    }
+}
+
     }
 
 }
