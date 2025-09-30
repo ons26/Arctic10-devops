@@ -15,12 +15,5 @@ pipeline {
             }
         }
     }
-     post {
-        success {
-            // Envoie un email quand le build réussit
-            mail to: 'ons26bm@gmail.com',
-                 subject: "Build réussi: ${currentBuild.fullDisplayName}",
-                 body: "Le build ${currentBuild.fullDisplayName} a réussi. Consulte Jenkins pour plus de détails."
-        }
-     }
+
 }
