@@ -53,6 +53,11 @@ pipeline {
                 
             }
         }
+                 stage('Run Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
          stage('SonarQube Analysis') {
     steps {
         withSonarQubeEnv('MySonarqube') {
@@ -61,11 +66,7 @@ pipeline {
             }
         }
     }
-                   stage('Run Tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+          
 
 }
 
