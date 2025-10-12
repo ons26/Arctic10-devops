@@ -6,13 +6,18 @@ pipeline {
         MYSQL_CONTAINER_NAME = "mysql-student"
     }
     stages {
-            stage('Start MySQL') {
-    steps {
-        sh """
-        docker run -d --name mysql-student -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=studentdb -p 3306:3306 mysql:8.0
-        """
-    }
-}
+          steps {
+                script {
+                    // Démarre le conteneur MySQL
+                    sh """
+                        docker run -d --name ${MYSQL_CONTAINER_NAME} \
+                        -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+                        -e MYSQL_DATABASE=${MYSQL_DATABASE} \
+                        -p 3306:3306 mysql:8.0
+                    """
+                }
+            }
+        }
         stage('Git') {
             steps {
                 git branch: 'main', url: 'https://github.com/ons26/Arctic10-devops.git'
