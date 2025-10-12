@@ -6,6 +6,7 @@ pipeline {
         MYSQL_CONTAINER_NAME = "mysql-student"
     }
     stages {
+         stage('Start MySQL') {
           steps {
                 script {
                     // Démarre le conteneur MySQL
