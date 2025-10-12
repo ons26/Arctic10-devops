@@ -1,17 +1,16 @@
 pipeline {
     agent any
- environment {
+    environment {
         MYSQL_ROOT_PASSWORD = "root"
         MYSQL_DATABASE = "studentdb"
         MYSQL_CONTAINER_NAME = "mysql-student"
     }
+
     stages {
-         stage('Start MySQL') {
-          steps {
+        stage('Start MySQL') {
+            steps {
                 script {
-                    // Démarre le conteneur MySQL
                     sh """
-                      
                         docker run -d --name ${MYSQL_CONTAINER_NAME} \
                         -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
                         -e MYSQL_DATABASE=${MYSQL_DATABASE} \
@@ -20,7 +19,8 @@ pipeline {
                 }
             }
         }
-                stage('Wait for MySQL') {
+
+        stage('Wait for MySQL') {
             steps {
                 script {
                     sh '''
@@ -37,41 +37,41 @@ pipeline {
                             fi
                         done
                         echo "✅ MySQL is ready!"
-                          '''
-                    
+                    '''
                 }
             }
         }
+
         stage('Git') {
             steps {
                 git branch: 'main', url: 'https://github.com/ons26/Arctic10-devops.git'
             }
         }
+
         stage('Build') {
             steps {
-                  
-                    sh 'mvn -B -DskipTests clean package'
-                
+                sh 'mvn -B -DskipTests clean package'
             }
         }
-           stage('Run Tests') {
+
+        stage('Run Tests') {
             steps {
                 sh 'mvn test'
             }
-        }  
-          
-         stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('MySonarqube') {
-            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                sh 'mvn sonar:sonar -Dsonar.projectKey=arctic10-devops -Dsonar.host.url=http://192.168.177.172:9000 -Dsonar.login=$SONAR_TOKEN'
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('MySonarqube') {
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=arctic10-devops -Dsonar.host.url=http://192.168.177.172:9000 -Dsonar.login=$SONAR_TOKEN'
+                    }
+                }
             }
         }
-    }
-            
+    } // fin de stages
 
-}
-          post {
+    post {
         always {
             // Arrête et supprime le conteneur MySQL pour nettoyage
             sh "docker stop ${MYSQL_CONTAINER_NAME} || true"
@@ -85,6 +85,4 @@ pipeline {
         }
     }
 
-    }
-
-}
+} // fin de pipeline
