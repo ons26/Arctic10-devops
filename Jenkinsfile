@@ -36,6 +36,7 @@ pipeline {
                             fi
                         done
                         echo "✅ MySQL is ready!"
+                          '''
                     
                 }
             }
