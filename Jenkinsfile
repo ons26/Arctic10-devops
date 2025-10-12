@@ -19,6 +19,27 @@ pipeline {
                 }
             }
         }
+                stage('Wait for MySQL') {
+            steps {
+                script {
+                    sh '''
+                        echo "⏳ Waiting for MySQL to be ready..."
+                        timeout=60
+                        count=0
+                        until docker exec mysql-student mysqladmin ping -uroot -proot --silent; do
+                            sleep 2
+                            count=$((count+2))
+                            if [ $count -ge $timeout ]; then
+                                echo "❌ MySQL not ready after $timeout seconds"
+                                docker logs mysql-student
+                                exit 1
+                            fi
+                        done
+                        echo "✅ MySQL is ready!"
+                    
+                }
+            }
+        }
         stage('Git') {
             steps {
                 git branch: 'main', url: 'https://github.com/ons26/Arctic10-devops.git'
