@@ -11,6 +11,7 @@ pipeline {
             steps {
                 script {
                     sh """
+                     docker rm -f ${MYSQL_CONTAINER_NAME} || true
                         docker run -d --name ${MYSQL_CONTAINER_NAME} \
                         -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
                         -e MYSQL_DATABASE=${MYSQL_DATABASE} \
