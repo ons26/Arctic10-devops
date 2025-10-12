@@ -11,7 +11,7 @@ pipeline {
                 script {
                     // Démarre le conteneur MySQL
                     sh """
-                        docker rm -f ${MYSQL_CONTAINER_NAME} || true
+                      
                         docker run -d --name ${MYSQL_CONTAINER_NAME} \
                         -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
                         -e MYSQL_DATABASE=${MYSQL_DATABASE} \
@@ -54,6 +54,11 @@ pipeline {
                 
             }
         }
+           stage('Run Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }  
           
          stage('SonarQube Analysis') {
     steps {
@@ -63,13 +68,22 @@ pipeline {
             }
         }
     }
-           stage('Run Tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }      
+            
 
 }
+          post {
+        always {
+            // Arrête et supprime le conteneur MySQL pour nettoyage
+            sh "docker stop ${MYSQL_CONTAINER_NAME} || true"
+            sh "docker rm ${MYSQL_CONTAINER_NAME} || true"
+        }
+        success {
+            echo "Pipeline terminé avec succès ✅"
+        }
+        failure {
+            echo "Le pipeline a échoué ❌"
+        }
+    }
 
     }
 
