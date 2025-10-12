@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+ environment {
+        MYSQL_ROOT_PASSWORD = "root"
+        MYSQL_DATABASE = "studentdb"
+        MYSQL_CONTAINER_NAME = "mysql-student"
+    }
     stages {
             stage('Start MySQL') {
     steps {
