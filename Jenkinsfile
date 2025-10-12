@@ -9,16 +9,6 @@ pipeline {
         """
     }
 }
-             stage('Wait for MySQL') {
-    steps {
-        sh """
-        echo "Waiting for MySQL to be ready..."
-        until docker exec mysql-student mysqladmin ping -uroot -proot --silent; do
-            sleep 2
-        done
-        """
-    }
-}
         stage('Git') {
             steps {
                 git branch: 'main', url: 'https://github.com/ons26/Arctic10-devops.git'
