@@ -1,6 +1,8 @@
 pipeline {
     agent any
     environment {
+         DOCKER_IMAGE = "benmaaouia/spring-backend"
+         DOCKER_TAG = "latest"
         MYSQL_ROOT_PASSWORD = "root"
         MYSQL_DATABASE = "studentdb"
         MYSQL_CONTAINER_NAME = "mysql-student"
@@ -58,6 +60,13 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'mvn test'
+            }
+        }
+          stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                }
             }
         }
 
