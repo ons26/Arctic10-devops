@@ -82,8 +82,8 @@ pipeline {
              stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                    kubectl apply -f /k8s/mysql-deployment.yaml
-                    kubectl apply -f /k8s/backend-deployment.yaml
+                    kubectl apply -f k8s/mysql-deployment.yaml
+                    kubectl apply -f k8s/backend-deployment.yaml
                 """
             }
         }
