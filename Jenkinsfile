@@ -84,8 +84,8 @@ pipeline {
         script {
             sh """
                 echo "🚀 Déploiement sur Kubernetes..."
-                kubectl apply -f k8s/mysql-deployment.yaml
-                kubectl apply -f k8s/backend-deployment.yaml
+                kubectl apply -f backend/mysql-deployment.yaml
+                kubectl apply -f backend/backend-deployment.yaml
             """
         }
     }
