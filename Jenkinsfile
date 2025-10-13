@@ -82,11 +82,13 @@ pipeline {
         stage('Deploy to Kubernetes') {
     steps {
         script {
+            withEnv(["KUBECONFIG=/var/lib/jenkins/.kube/config"]) {
             sh """
                 echo "🚀 Déploiement sur Kubernetes..."
                 kubectl apply -f backend/mysql-deployment.yaml
                 kubectl apply -f backend/backend-deployment.yaml
             """
+        }
         }
     }
 }
